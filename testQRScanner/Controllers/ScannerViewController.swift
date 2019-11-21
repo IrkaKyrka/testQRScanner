@@ -14,6 +14,8 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var metadataOutput: AVCaptureMetadataOutput?
     private var boundingBox: CAShapeLayer?
+    private var conerLineFirst: CAShapeLayer?
+    private var conerLineSecond: CAShapeLayer?
     private var rectPath: UIBezierPath?
     private let sessionQueue = DispatchQueue(label: "Capture Session Queue")
     private var imageUrl: String?
@@ -54,13 +56,14 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         rectPath = UIBezierPath(rect: CGRect(x: view.bounds.minX + 50, y: view.bounds.minY + 200, width: view.bounds.maxX - 100, height: view.bounds.maxY - 300))
         guard let rectPath = rectPath else { return CAShapeLayer() }
         path.append(rectPath)
-        path.usesEvenOddFillRule = true
+//        path.usesEvenOddFillRule = true
 
         let fillLayer = CAShapeLayer()
         fillLayer.path = path.cgPath
         fillLayer.fillRule = .evenOdd
         fillLayer.fillColor = view.backgroundColor?.cgColor
         fillLayer.opacity = 0.7
+        drawConer(x: view.bounds.minX + 53, y: view.bounds.minY + 203)
         
         return fillLayer
     }
@@ -146,6 +149,34 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         
         boundingBox?.path = path.cgPath
         boundingBox?.isHidden = false
+    }
+    
+    private func drawConer(x: CGFloat, y: CGFloat) {
+        conerLineFirst = CAShapeLayer()
+        conerLineSecond = CAShapeLayer()
+
+        if let conerLineFirst = conerLineFirst, let conerLineSecond = conerLineSecond {
+            conerLineFirst.strokeColor = UIColor.white.cgColor
+            conerLineFirst.lineWidth = 6
+            conerLineFirst.fillColor = UIColor.clear.cgColor
+            previewLayer?.addSublayer(conerLineFirst)
+            conerLineSecond.strokeColor = UIColor.white.cgColor
+            conerLineSecond.lineWidth = 6
+            conerLineSecond.fillColor = UIColor.clear.cgColor
+            previewLayer?.addSublayer(conerLineSecond)
+        }
+        
+        let pathFirst = UIBezierPath()
+        guard let lineWidth = conerLineFirst?.lineWidth else { return }
+        pathFirst.move(to: CGPoint(x: x, y: y + lineWidth / 2))
+        pathFirst.addLine(to: CGPoint(x: x, y: y + 20 - lineWidth / 4))
+        
+        let pathSecond = UIBezierPath()
+        pathSecond.move(to: CGPoint(x: x - lineWidth / 2, y: y))
+        pathSecond.addLine(to: CGPoint(x: x + 20, y: y))
+        conerLineFirst?.path = pathFirst.cgPath
+        conerLineSecond?.path = pathSecond.cgPath
+
     }
     
     func showError() {

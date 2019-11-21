@@ -15,26 +15,76 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w0M-CZ-O1a">
-                                <rect key="frame" x="0.0" y="44" width="414" height="782"/>
-                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUZ-eK-7M8">
+                                <rect key="frame" x="36" y="796" width="85" height="30"/>
+                                <state key="normal" title="Rotate Right"/>
+                                <connections>
+                                    <action selector="rotateImageRight:" destination="TbW-0s-8bM" eventType="touchUpInside" id="2tZ-A8-FBO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czb-fx-81v">
+                                <rect key="frame" x="137" y="796" width="76" height="30"/>
+                                <state key="normal" title="Rotate Left"/>
+                                <connections>
+                                    <action selector="rotateImageLeft:" destination="TbW-0s-8bM" eventType="touchUpInside" id="d9E-bO-MlF"/>
+                                </connections>
+                            </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzs-PW-C2k">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="788"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w0M-CZ-O1a">
+                                        <rect key="frame" x="0.0" y="0.0" width="406" height="788"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="w0M-CZ-O1a" firstAttribute="top" secondItem="zzs-PW-C2k" secondAttribute="top" id="2MV-kR-oze"/>
+                                    <constraint firstAttribute="bottom" secondItem="w0M-CZ-O1a" secondAttribute="bottom" id="I1I-lG-y10"/>
+                                    <constraint firstItem="w0M-CZ-O1a" firstAttribute="leading" secondItem="zzs-PW-C2k" secondAttribute="leading" id="drf-5q-XfK"/>
+                                    <constraint firstAttribute="trailing" secondItem="w0M-CZ-O1a" secondAttribute="trailing" id="kXX-p5-Eb0"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="9MN-Yu-8N8"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="l2D-Zi-DYx"/>
+                                <connections>
+                                    <outlet property="delegate" destination="TbW-0s-8bM" id="LAB-LT-HNx"/>
+                                </connections>
+                            </scrollView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="pDE-Bb-7wb">
+                                <rect key="frame" x="197" y="402" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="trailing" secondItem="w0M-CZ-O1a" secondAttribute="trailing" id="5Fr-Pp-ahM"/>
-                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="bottom" secondItem="w0M-CZ-O1a" secondAttribute="bottom" constant="36" id="Igg-bh-yMB"/>
-                            <constraint firstItem="w0M-CZ-O1a" firstAttribute="top" secondItem="Fuk-oV-N6n" secondAttribute="top" id="Ito-vo-59w"/>
-                            <constraint firstItem="w0M-CZ-O1a" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" id="UVb-mH-w8I"/>
+                            <constraint firstItem="zzs-PW-C2k" firstAttribute="trailing" secondItem="Fuk-oV-N6n" secondAttribute="trailing" id="ChQ-3Z-Qbb"/>
+                            <constraint firstItem="zzs-PW-C2k" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" id="GJx-xZ-vaf"/>
+                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="bottom" secondItem="czb-fx-81v" secondAttribute="bottom" constant="36" id="Nnd-Du-219"/>
+                            <constraint firstAttribute="bottom" secondItem="zzs-PW-C2k" secondAttribute="bottom" constant="108" id="ZXe-hX-5Fz"/>
+                            <constraint firstItem="gUZ-eK-7M8" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" constant="36" id="bgB-mP-9cH"/>
+                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="bottom" secondItem="gUZ-eK-7M8" secondAttribute="bottom" constant="36" id="cz9-uf-Cnw"/>
+                            <constraint firstItem="zzs-PW-C2k" firstAttribute="top" secondItem="800-uH-aYK" secondAttribute="top" id="f2q-3r-DOF"/>
+                            <constraint firstItem="czb-fx-81v" firstAttribute="leading" secondItem="gUZ-eK-7M8" secondAttribute="trailing" constant="16" id="quS-jv-0pr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Fuk-oV-N6n"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="pDE-Bb-7wb" id="fVb-cc-pZU"/>
+                        <outlet property="imageViewBottomConstraint" destination="I1I-lG-y10" id="fjd-ES-p9d"/>
+                        <outlet property="imageViewLeadingConstraint" destination="drf-5q-XfK" id="Ic6-77-ov5"/>
+                        <outlet property="imageViewTopConstraint" destination="2MV-kR-oze" id="OOl-Li-M2x"/>
+                        <outlet property="imageViewTrailingConstraint" destination="kXX-p5-Eb0" id="8vO-CN-Syc"/>
                         <outlet property="scannedImage" destination="w0M-CZ-O1a" id="Iui-YY-xZN"/>
+                        <outlet property="scrollView" destination="zzs-PW-C2k" id="wAO-VY-ruV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lwz-2a-9oY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="U4u-Qb-UeH">
+                    <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Button"/>
+                </button>
             </objects>
-            <point key="canvasLocation" x="49" y="94"/>
+            <point key="canvasLocation" x="47.826086956521742" y="93.75"/>
         </scene>
     </scenes>
 </document>
