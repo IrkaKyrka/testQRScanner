@@ -15,20 +15,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUZ-eK-7M8">
-                                <rect key="frame" x="36" y="796" width="85" height="30"/>
-                                <state key="normal" title="Rotate Right"/>
-                                <connections>
-                                    <action selector="rotateImageRight:" destination="TbW-0s-8bM" eventType="touchUpInside" id="2tZ-A8-FBO"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czb-fx-81v">
-                                <rect key="frame" x="137" y="796" width="76" height="30"/>
-                                <state key="normal" title="Rotate Left"/>
-                                <connections>
-                                    <action selector="rotateImageLeft:" destination="TbW-0s-8bM" eventType="touchUpInside" id="d9E-bO-MlF"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="T1N-Xm-uzv">
+                                <rect key="frame" x="36" y="796" width="342" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUZ-eK-7M8">
+                                        <rect key="frame" x="0.0" y="0.0" width="95.5" height="30"/>
+                                        <state key="normal" title="Rotate Right"/>
+                                        <connections>
+                                            <action selector="rotateImageRight:" destination="TbW-0s-8bM" eventType="touchUpInside" id="2tZ-A8-FBO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czb-fx-81v">
+                                        <rect key="frame" x="123.5" y="0.0" width="95" height="30"/>
+                                        <state key="normal" title="Rotate Left"/>
+                                        <connections>
+                                            <action selector="rotateImageLeft:" destination="TbW-0s-8bM" eventType="touchUpInside" id="d9E-bO-MlF"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucP-O3-hrF">
+                                        <rect key="frame" x="246.5" y="0.0" width="95.5" height="30"/>
+                                        <state key="normal" title="Crop"/>
+                                        <connections>
+                                            <action selector="cropImage:" destination="TbW-0s-8bM" eventType="touchUpInside" id="z7T-Pv-Aig"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzs-PW-C2k">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="788"/>
                                 <subviews>
@@ -57,13 +69,13 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="zzs-PW-C2k" firstAttribute="trailing" secondItem="Fuk-oV-N6n" secondAttribute="trailing" id="ChQ-3Z-Qbb"/>
+                            <constraint firstItem="T1N-Xm-uzv" firstAttribute="top" secondItem="zzs-PW-C2k" secondAttribute="bottom" constant="8" id="F5N-ZQ-398"/>
                             <constraint firstItem="zzs-PW-C2k" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" id="GJx-xZ-vaf"/>
-                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="bottom" secondItem="czb-fx-81v" secondAttribute="bottom" constant="36" id="Nnd-Du-219"/>
+                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="trailing" secondItem="T1N-Xm-uzv" secondAttribute="trailing" constant="36" id="Q9J-bP-qrH"/>
+                            <constraint firstItem="T1N-Xm-uzv" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" constant="36" id="TLj-db-gIs"/>
                             <constraint firstAttribute="bottom" secondItem="zzs-PW-C2k" secondAttribute="bottom" constant="108" id="ZXe-hX-5Fz"/>
-                            <constraint firstItem="gUZ-eK-7M8" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" constant="36" id="bgB-mP-9cH"/>
-                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="bottom" secondItem="gUZ-eK-7M8" secondAttribute="bottom" constant="36" id="cz9-uf-Cnw"/>
                             <constraint firstItem="zzs-PW-C2k" firstAttribute="top" secondItem="800-uH-aYK" secondAttribute="top" id="f2q-3r-DOF"/>
-                            <constraint firstItem="czb-fx-81v" firstAttribute="leading" secondItem="gUZ-eK-7M8" secondAttribute="trailing" constant="16" id="quS-jv-0pr"/>
+                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="bottom" secondItem="T1N-Xm-uzv" secondAttribute="bottom" constant="36" id="v6i-Yo-qdB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Fuk-oV-N6n"/>
                     </view>

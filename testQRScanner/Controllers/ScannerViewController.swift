@@ -9,6 +9,10 @@
 import UIKit
 import AVFoundation
 
+enum ConerLocation {
+    case topRight, topLeft, bottomRight, bottomLeft
+}
+
 class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     private var captureSession: AVCaptureSession!
     private var previewLayer: AVCaptureVideoPreviewLayer?
@@ -19,6 +23,18 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
     private var rectPath: UIBezierPath?
     private let sessionQueue = DispatchQueue(label: "Capture Session Queue")
     private var imageUrl: String?
+    
+    let descriptionTextLayer: CATextLayer = {
+        let text = CATextLayer()
+        text.string = "Поместите код в середине квадрата. Он будет отсканирован автоматически."
+        text.font = UIFont.systemFont(ofSize: 5, weight: UIFont.Weight.light)
+        text.foregroundColor = UIColor.white.cgColor
+        text.isWrapped = true
+        text.alignmentMode = CATextLayerAlignmentMode.center
+        text.contentsScale = UIScreen.main.scale
+
+        return text
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,14 +72,16 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         rectPath = UIBezierPath(rect: CGRect(x: view.bounds.minX + 50, y: view.bounds.minY + 200, width: view.bounds.maxX - 100, height: view.bounds.maxY - 300))
         guard let rectPath = rectPath else { return CAShapeLayer() }
         path.append(rectPath)
-//        path.usesEvenOddFillRule = true
 
         let fillLayer = CAShapeLayer()
         fillLayer.path = path.cgPath
         fillLayer.fillRule = .evenOdd
         fillLayer.fillColor = view.backgroundColor?.cgColor
         fillLayer.opacity = 0.7
-        drawConer(x: view.bounds.minX + 53, y: view.bounds.minY + 203)
+        drawConer(x: view.bounds.minX + 53, y: view.bounds.minY + 203, location: .topRight)
+        drawConer(x: view.bounds.maxX - 53, y: view.bounds.minY + 203, location: .topLeft)
+        drawConer(x: view.bounds.minX + 53, y: view.bounds.maxY - 103, location: .bottomRight)
+        drawConer(x: view.bounds.maxX - 53, y: view.bounds.maxY - 103, location: .bottomLeft)
         
         return fillLayer
     }
@@ -91,10 +109,13 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
             captureSession.commitConfiguration()
             
             DispatchQueue.main.async { [weak self] in
-                self?.setupPreviewLayer()
-                guard let previewLayer = self?.previewLayer else { return }
-                previewLayer.addSublayer((self?.drawRectFofScanning())!)
-                self?.drawBoundingBox()
+                guard let self = self else { return }
+                self.setupPreviewLayer()
+                guard let previewLayer = self.previewLayer else { return }
+                previewLayer.addSublayer(self.drawRectFofScanning())
+                previewLayer.addSublayer(self.descriptionTextLayer)
+                self.descriptionTextLayer.frame = previewLayer.bounds
+                self.drawBoundingBox()
             }
         }
     }
@@ -151,7 +172,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         boundingBox?.isHidden = false
     }
     
-    private func drawConer(x: CGFloat, y: CGFloat) {
+    private func drawConer(x: CGFloat, y: CGFloat, location: ConerLocation) {
         conerLineFirst = CAShapeLayer()
         conerLineSecond = CAShapeLayer()
 
@@ -165,15 +186,32 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
             conerLineSecond.fillColor = UIColor.clear.cgColor
             previewLayer?.addSublayer(conerLineSecond)
         }
-        
         let pathFirst = UIBezierPath()
-        guard let lineWidth = conerLineFirst?.lineWidth else { return }
-        pathFirst.move(to: CGPoint(x: x, y: y + lineWidth / 2))
-        pathFirst.addLine(to: CGPoint(x: x, y: y + 20 - lineWidth / 4))
-        
         let pathSecond = UIBezierPath()
-        pathSecond.move(to: CGPoint(x: x - lineWidth / 2, y: y))
-        pathSecond.addLine(to: CGPoint(x: x + 20, y: y))
+        guard let lineWidth = conerLineFirst?.lineWidth else { return }
+        
+        if location == .topRight {
+            pathFirst.move(to: CGPoint(x: x, y: y + lineWidth / 2))
+            pathFirst.addLine(to: CGPoint(x: x, y: y + 20 - lineWidth / 4))
+            pathSecond.move(to: CGPoint(x: x - lineWidth / 2, y: y))
+            pathSecond.addLine(to: CGPoint(x: x + 20, y: y))
+        } else if location == .topLeft {
+            pathFirst.move(to: CGPoint(x: x, y: y - lineWidth / 2))
+            pathFirst.addLine(to: CGPoint(x: x, y: y + 20 - lineWidth / 4))
+            pathSecond.move(to: CGPoint(x: x - lineWidth / 2, y: y))
+            pathSecond.addLine(to: CGPoint(x: x - 20, y: y))
+        } else if location == .bottomRight {
+            pathFirst.move(to: CGPoint(x: x, y: y - lineWidth / 2))
+            pathFirst.addLine(to: CGPoint(x: x, y: y - 20 + lineWidth / 4))
+            pathSecond.move(to: CGPoint(x: x - lineWidth / 2, y: y))
+            pathSecond.addLine(to: CGPoint(x: x + 20, y: y))
+        } else if location == .bottomLeft {
+            pathFirst.move(to: CGPoint(x: x, y: y + lineWidth / 2))
+            pathFirst.addLine(to: CGPoint(x: x, y: y - 20 + lineWidth / 4))
+            pathSecond.move(to: CGPoint(x: x + lineWidth / 2, y: y))
+            pathSecond.addLine(to: CGPoint(x: x - 20, y: y))
+        }
+        
         conerLineFirst?.path = pathFirst.cgPath
         conerLineSecond?.path = pathSecond.cgPath
 

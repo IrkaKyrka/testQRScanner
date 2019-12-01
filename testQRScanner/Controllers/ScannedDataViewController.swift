@@ -41,6 +41,29 @@ class ScannedDataViewController: UIViewController, UIScrollViewDelegate {
         self.scannedImage.image = self.scannedImage.image?.rotate(radians: -.pi/2)
     }
     
+    @IBAction func cropImage(_ sender: Any) {
+        UIGraphicsBeginImageContextWithOptions(scrollView.bounds.size, true, UIScreen.main.scale)
+        let offset = scrollView.contentOffset
+        
+        UIGraphicsGetCurrentContext()?.translateBy(x: -offset.x, y: -offset.y)
+        scrollView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        guard let imageForSave = image else { return }
+        UIImageWriteToSavedPhotosAlbum(imageForSave, nil, nil, nil)
+        let alert = UIAlertController(title: "Image saved", message: "Your image has  been saved to your camera roll", preferredStyle: .alert)
+               alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
+       
+        
+    }
+    
     private func loadImage(url: String) {
         activityIndicatorSetup()
         DispatchQueue.global().async { [weak self] in
@@ -71,16 +94,6 @@ class ScannedDataViewController: UIViewController, UIScrollViewDelegate {
         effectView.removeFromSuperview()
         activityIndicator.stopAnimating()
     }
-    
-//    func crop(image: UIImage, cropRect: CGRect) -> UIImage? {
-//        UIGraphicsBeginImageContextWithOptions(cropRect.size, false, image.scale)
-//        let origin = CGPoint(x: cropRect.origin.x * CGFloat(-1), y: cropRect.origin.y * CGFloat(-1))
-//            image.draw(at: origin)
-//            let result = UIGraphicsGetImageFromCurrentImageContext()
-//            UIGraphicsEndImageContext();
-//
-//        return result
-//    }
     
     func updateMinZoomScaleForSize(size: CGSize) {
         let widthScale = size.width / scannedImage.bounds.width
