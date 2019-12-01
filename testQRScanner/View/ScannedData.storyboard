@@ -42,19 +42,7 @@
                                 </subviews>
                             </stackView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzs-PW-C2k">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="788"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w0M-CZ-O1a">
-                                        <rect key="frame" x="0.0" y="0.0" width="406" height="788"/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="w0M-CZ-O1a" firstAttribute="top" secondItem="zzs-PW-C2k" secondAttribute="top" id="2MV-kR-oze"/>
-                                    <constraint firstAttribute="bottom" secondItem="w0M-CZ-O1a" secondAttribute="bottom" id="I1I-lG-y10"/>
-                                    <constraint firstItem="w0M-CZ-O1a" firstAttribute="leading" secondItem="zzs-PW-C2k" secondAttribute="leading" id="drf-5q-XfK"/>
-                                    <constraint firstAttribute="trailing" secondItem="w0M-CZ-O1a" secondAttribute="trailing" id="kXX-p5-Eb0"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="44" width="414" height="744"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="9MN-Yu-8N8"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="l2D-Zi-DYx"/>
                                 <connections>
@@ -71,21 +59,16 @@
                             <constraint firstItem="zzs-PW-C2k" firstAttribute="trailing" secondItem="Fuk-oV-N6n" secondAttribute="trailing" id="ChQ-3Z-Qbb"/>
                             <constraint firstItem="T1N-Xm-uzv" firstAttribute="top" secondItem="zzs-PW-C2k" secondAttribute="bottom" constant="8" id="F5N-ZQ-398"/>
                             <constraint firstItem="zzs-PW-C2k" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" id="GJx-xZ-vaf"/>
+                            <constraint firstItem="zzs-PW-C2k" firstAttribute="top" secondItem="Fuk-oV-N6n" secondAttribute="top" id="HzT-as-rVI"/>
                             <constraint firstItem="Fuk-oV-N6n" firstAttribute="trailing" secondItem="T1N-Xm-uzv" secondAttribute="trailing" constant="36" id="Q9J-bP-qrH"/>
                             <constraint firstItem="T1N-Xm-uzv" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" constant="36" id="TLj-db-gIs"/>
                             <constraint firstAttribute="bottom" secondItem="zzs-PW-C2k" secondAttribute="bottom" constant="108" id="ZXe-hX-5Fz"/>
-                            <constraint firstItem="zzs-PW-C2k" firstAttribute="top" secondItem="800-uH-aYK" secondAttribute="top" id="f2q-3r-DOF"/>
                             <constraint firstItem="Fuk-oV-N6n" firstAttribute="bottom" secondItem="T1N-Xm-uzv" secondAttribute="bottom" constant="36" id="v6i-Yo-qdB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Fuk-oV-N6n"/>
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="pDE-Bb-7wb" id="fVb-cc-pZU"/>
-                        <outlet property="imageViewBottomConstraint" destination="I1I-lG-y10" id="fjd-ES-p9d"/>
-                        <outlet property="imageViewLeadingConstraint" destination="drf-5q-XfK" id="Ic6-77-ov5"/>
-                        <outlet property="imageViewTopConstraint" destination="2MV-kR-oze" id="OOl-Li-M2x"/>
-                        <outlet property="imageViewTrailingConstraint" destination="kXX-p5-Eb0" id="8vO-CN-Syc"/>
-                        <outlet property="scannedImage" destination="w0M-CZ-O1a" id="Iui-YY-xZN"/>
                         <outlet property="scrollView" destination="zzs-PW-C2k" id="wAO-VY-ruV"/>
                     </connections>
                 </viewController>
