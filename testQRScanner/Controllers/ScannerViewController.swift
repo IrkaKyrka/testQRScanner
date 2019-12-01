@@ -24,14 +24,20 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
     private let sessionQueue = DispatchQueue(label: "Capture Session Queue")
     private var imageUrl: String?
     
+    let offsetY: CGFloat = 120
+    let offsetX: CGFloat = 50
+    let cornerSize: CGFloat = 20
+    let cornerLineWidth: CGFloat = 6
+    
     let descriptionTextLayer: CATextLayer = {
         let text = CATextLayer()
-        text.string = "Поместите код в середине квадрата. Он будет отсканирован автоматически."
-        text.font = UIFont.systemFont(ofSize: 5, weight: UIFont.Weight.light)
+        text.string = "Поместите штрихкод в середине прямоугольника. Он будет отсканирован автоматически."
         text.foregroundColor = UIColor.white.cgColor
         text.isWrapped = true
         text.alignmentMode = CATextLayerAlignmentMode.center
         text.contentsScale = UIScreen.main.scale
+        text.font = UIFont.systemFont(ofSize: 5, weight: UIFont.Weight.light)
+        text.fontSize = 14
 
         return text
     }()
@@ -69,7 +75,8 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
     
     private func drawRectFofScanning() -> CAShapeLayer {
         let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height), cornerRadius: 0)
-        rectPath = UIBezierPath(rect: CGRect(x: view.bounds.minX + 50, y: view.bounds.minY + 200, width: view.bounds.maxX - 100, height: view.bounds.maxY - 300))
+        let rectPathY = view.safeAreaInsets.top + offsetY
+        rectPath = UIBezierPath(rect: CGRect(x: view.bounds.minX + offsetX, y: view.safeAreaInsets.top + offsetY, width: view.bounds.maxX - 2 * offsetX, height: view.bounds.maxY - rectPathY - offsetY))
         guard let rectPath = rectPath else { return CAShapeLayer() }
         path.append(rectPath)
 
@@ -78,10 +85,10 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         fillLayer.fillRule = .evenOdd
         fillLayer.fillColor = view.backgroundColor?.cgColor
         fillLayer.opacity = 0.7
-        drawConer(x: view.bounds.minX + 53, y: view.bounds.minY + 203, location: .topRight)
-        drawConer(x: view.bounds.maxX - 53, y: view.bounds.minY + 203, location: .topLeft)
-        drawConer(x: view.bounds.minX + 53, y: view.bounds.maxY - 103, location: .bottomRight)
-        drawConer(x: view.bounds.maxX - 53, y: view.bounds.maxY - 103, location: .bottomLeft)
+        drawConer(x: view.bounds.minX + offsetX, y: view.safeAreaInsets.top + offsetY, location: .topLeft)
+        drawConer(x: view.bounds.maxX - offsetX, y: view.safeAreaInsets.top + offsetY, location: .topRight)
+        drawConer(x: view.bounds.minX + offsetX, y: view.bounds.maxY - offsetY, location: .bottomLeft)
+        drawConer(x: view.bounds.maxX - offsetX, y: view.bounds.maxY - offsetY, location: .bottomRight)
         
         return fillLayer
     }
@@ -114,7 +121,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
                 guard let previewLayer = self.previewLayer else { return }
                 previewLayer.addSublayer(self.drawRectFofScanning())
                 previewLayer.addSublayer(self.descriptionTextLayer)
-                self.descriptionTextLayer.frame = previewLayer.bounds
+                self.descriptionTextLayer.frame = CGRect(x: previewLayer.bounds.minX, y: self.view.safeAreaInsets.top, width: previewLayer.bounds.width , height: 100)
                 self.drawBoundingBox()
             }
         }
@@ -153,8 +160,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         view.layer.addSublayer(previewLayer)
     }
     
-    
-    func updateBoundingBox(_ points: [CGPoint]) {
+    private func updateBoundingBox(_ points: [CGPoint]) {
         guard let firstPoint = points.first else {
             return
         }
@@ -175,41 +181,41 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
     private func drawConer(x: CGFloat, y: CGFloat, location: ConerLocation) {
         conerLineFirst = CAShapeLayer()
         conerLineSecond = CAShapeLayer()
-
+        
         if let conerLineFirst = conerLineFirst, let conerLineSecond = conerLineSecond {
             conerLineFirst.strokeColor = UIColor.white.cgColor
-            conerLineFirst.lineWidth = 6
+            conerLineFirst.lineWidth = cornerLineWidth
             conerLineFirst.fillColor = UIColor.clear.cgColor
             previewLayer?.addSublayer(conerLineFirst)
             conerLineSecond.strokeColor = UIColor.white.cgColor
-            conerLineSecond.lineWidth = 6
+            conerLineSecond.lineWidth = cornerLineWidth
             conerLineSecond.fillColor = UIColor.clear.cgColor
             previewLayer?.addSublayer(conerLineSecond)
         }
         let pathFirst = UIBezierPath()
         let pathSecond = UIBezierPath()
-        guard let lineWidth = conerLineFirst?.lineWidth else { return }
         
-        if location == .topRight {
-            pathFirst.move(to: CGPoint(x: x, y: y + lineWidth / 2))
-            pathFirst.addLine(to: CGPoint(x: x, y: y + 20 - lineWidth / 4))
-            pathSecond.move(to: CGPoint(x: x - lineWidth / 2, y: y))
-            pathSecond.addLine(to: CGPoint(x: x + 20, y: y))
-        } else if location == .topLeft {
-            pathFirst.move(to: CGPoint(x: x, y: y - lineWidth / 2))
-            pathFirst.addLine(to: CGPoint(x: x, y: y + 20 - lineWidth / 4))
-            pathSecond.move(to: CGPoint(x: x - lineWidth / 2, y: y))
-            pathSecond.addLine(to: CGPoint(x: x - 20, y: y))
-        } else if location == .bottomRight {
-            pathFirst.move(to: CGPoint(x: x, y: y - lineWidth / 2))
-            pathFirst.addLine(to: CGPoint(x: x, y: y - 20 + lineWidth / 4))
-            pathSecond.move(to: CGPoint(x: x - lineWidth / 2, y: y))
-            pathSecond.addLine(to: CGPoint(x: x + 20, y: y))
-        } else if location == .bottomLeft {
-            pathFirst.move(to: CGPoint(x: x, y: y + lineWidth / 2))
-            pathFirst.addLine(to: CGPoint(x: x, y: y - 20 + lineWidth / 4))
-            pathSecond.move(to: CGPoint(x: x + lineWidth / 2, y: y))
-            pathSecond.addLine(to: CGPoint(x: x - 20, y: y))
+        switch location {
+        case .topLeft:
+            pathFirst.move(to: CGPoint(x: x + cornerLineWidth / 2, y: y))
+            pathFirst.addLine(to: CGPoint(x: x + cornerLineWidth / 2, y: y + cornerSize))
+            pathSecond.move(to: CGPoint(x: x, y: y + cornerLineWidth / 2))
+            pathSecond.addLine(to: CGPoint(x: x + cornerSize, y: y + cornerLineWidth / 2))
+        case .topRight:
+            pathFirst.move(to: CGPoint(x: x - cornerLineWidth / 2, y: y))
+            pathFirst.addLine(to: CGPoint(x: x - cornerLineWidth / 2, y: y + cornerSize))
+            pathSecond.move(to: CGPoint(x: x, y: y + cornerLineWidth / 2))
+            pathSecond.addLine(to: CGPoint(x: x - cornerSize, y: y + cornerLineWidth / 2))
+        case .bottomLeft:
+            pathFirst.move(to: CGPoint(x: x + cornerLineWidth / 2, y: y))
+            pathFirst.addLine(to: CGPoint(x: x + cornerLineWidth / 2, y: y - cornerSize))
+            pathSecond.move(to: CGPoint(x: x, y: y - cornerLineWidth / 2))
+            pathSecond.addLine(to: CGPoint(x: x + cornerSize, y: y - cornerLineWidth / 2))
+        case .bottomRight:
+            pathFirst.move(to: CGPoint(x: x - cornerLineWidth / 2, y: y))
+            pathFirst.addLine(to: CGPoint(x: x - cornerLineWidth / 2, y: y - cornerSize))
+            pathSecond.move(to: CGPoint(x: x, y: y - cornerLineWidth / 2))
+            pathSecond.addLine(to: CGPoint(x: x - cornerSize, y: y - cornerLineWidth / 2))
         }
         
         conerLineFirst?.path = pathFirst.cgPath

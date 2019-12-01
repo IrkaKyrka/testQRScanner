@@ -36,7 +36,7 @@
                                         <rect key="frame" x="246.5" y="0.0" width="95.5" height="30"/>
                                         <state key="normal" title="Crop"/>
                                         <connections>
-                                            <action selector="cropImage:" destination="TbW-0s-8bM" eventType="touchUpInside" id="z7T-Pv-Aig"/>
+                                            <action selector="cropAndSaveImage:" destination="TbW-0s-8bM" eventType="touchUpInside" id="z7T-Pv-Aig"/>
                                         </connections>
                                     </button>
                                 </subviews>

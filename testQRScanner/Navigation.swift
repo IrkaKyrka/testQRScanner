@@ -22,13 +22,14 @@ extension UIViewController {
 
 
 enum NavigationItem {
-    case scannedDataDetail(imageUrl: String)
+    case scannedDataDetail(imageUrl: String), drawing(image: UIImage)
     
     private var storyboardName: String {
         switch self {
         case .scannedDataDetail:
             return "ScannedData"
-            
+        case .drawing:
+            return "Drawing"
         }
     }
     
@@ -36,7 +37,8 @@ enum NavigationItem {
         switch self {
         case .scannedDataDetail:
             return "ScannedDataViewController"
-            
+        case .drawing:
+            return "DrawingViewController"
         }
     }
     
@@ -45,7 +47,8 @@ enum NavigationItem {
         switch self {
         case .scannedDataDetail(let imageUrl):
             return createScannedDataViewController(viewController: viewController, url: imageUrl)
-            
+        case .drawing(let image):
+            return createDrawingViewController(viewController: viewController, image: image)
         }
     }
     
@@ -63,6 +66,16 @@ enum NavigationItem {
         }
         
         viewController.url = url
+        return viewController
+    }
+    
+    private func createDrawingViewController(viewController: UIViewController, image: UIImage) -> UIViewController {
+        guard let viewController = viewController as? DrawingViewController else {
+            assertionFailure("Can't cast to ScannedDataViewController")
+            return UIViewController()
+        }
+        
+        viewController.image = image
         return viewController
     }
 }

@@ -30,16 +30,16 @@ class ScannedDataViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func rotateImageRight(_ sender: Any) {
-        //       UIView.animate(withDuration: 1, animations: {
+        //TODO: animation
         self.scannedImage.image = self.scannedImage.image?.rotate(radians: .pi/2)
-        //      })
     }
     
     @IBAction func rotateImageLeft(_ sender: Any) {
+        //TODO: animation
         self.scannedImage.image = self.scannedImage.image?.rotate(radians: -.pi/2)
     }
     
-    @IBAction func cropImage(_ sender: Any) {
+    @IBAction func cropAndSaveImage(_ sender: Any) {
         UIGraphicsBeginImageContextWithOptions(scrollView.bounds.size, true, UIScreen.main.scale)
         let offset = scrollView.contentOffset
         
@@ -118,19 +118,19 @@ class ScannedDataViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func activityIndicatorSetup() {
-           effectView.frame = view.frame
-           effectView.layer.masksToBounds = true
-           activityIndicator.frame = CGRect(x: view.frame.midX - 100, y: view.frame.midY - 100, width: 200, height: 200)
-           activityIndicator.startAnimating()
-           
-           effectView.contentView.addSubview(activityIndicator)
-           view.addSubview(effectView)
-       }
-       
-       private func stopActivityIndicator() {
-           effectView.removeFromSuperview()
-           activityIndicator.stopAnimating()
-       }
+        effectView.frame = view.frame
+        effectView.layer.masksToBounds = true
+        activityIndicator.frame = CGRect(x: view.frame.midX - 100, y: view.frame.midY - 100, width: 200, height: 200)
+        activityIndicator.startAnimating()
+        
+        effectView.contentView.addSubview(activityIndicator)
+        view.addSubview(effectView)
+    }
+    
+    private func stopActivityIndicator() {
+        effectView.removeFromSuperview()
+        activityIndicator.stopAnimating()
+    }
 }
 
 extension ScannedDataViewController {
