@@ -65,7 +65,7 @@ enum NavigationItem {
             return UIViewController()
         }
         
-        viewController.url = url
+        viewController.urlString = url
         return viewController
     }
     

@@ -14,13 +14,108 @@
                     <view key="view" contentMode="scaleToFill" id="S2i-os-vSb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xoa-r2-piX">
+                                <rect key="frame" x="0.0" y="44" width="414" height="754"/>
+                                <gestureRecognizers/>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="n0F-Yt-kHo">
+                                <rect key="frame" x="16" y="814" width="382" height="32"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="c8a-Z1-dbn">
+                                        <rect key="frame" x="0.0" y="0.0" width="77" height="32"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="baf-CB-qd3">
+                                                <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="32" id="15w-Yc-e3d"/>
+                                                </constraints>
+                                                <state key="normal" title="Button" image="iconUndo"/>
+                                                <connections>
+                                                    <action selector="undoButton:" destination="Hfg-Xt-2Nf" eventType="touchUpInside" id="Wab-TC-SyA"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jb2-Pi-cO7">
+                                                <rect key="frame" x="45" y="0.0" width="32" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="32" id="A5U-bM-9eO"/>
+                                                    <constraint firstAttribute="height" constant="32" id="eVm-hv-INK"/>
+                                                </constraints>
+                                                <state key="normal" title="Button" image="iconClean"/>
+                                                <connections>
+                                                    <action selector="cleanButton:" destination="Hfg-Xt-2Nf" eventType="touchUpInside" id="fbb-UD-3kA"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="H9c-dI-sIX">
+                                        <rect key="frame" x="112" y="0.0" width="104" height="32"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wt7-P2-8r3">
+                                                <rect key="frame" x="0.0" y="0.0" width="30" height="32"/>
+                                                <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="30" id="ZHi-ct-MvZ"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="changeColorButton:" destination="Hfg-Xt-2Nf" eventType="touchUpInside" id="MUw-Os-2qC"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3jw-ZC-b0c">
+                                                <rect key="frame" x="37" y="0.0" width="30" height="32"/>
+                                                <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="30" id="dp7-Uj-qgr"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="changeColorButton:" destination="Hfg-Xt-2Nf" eventType="touchUpInside" id="N2L-OE-myx"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajx-Da-3L4">
+                                                <rect key="frame" x="74" y="0.0" width="30" height="32"/>
+                                                <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="30" id="q6i-PJ-FuL"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="changeColorButton:" destination="Hfg-Xt-2Nf" eventType="touchUpInside" id="BbP-AI-Aar"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="dEn-1K-hoL">
+                                        <rect key="frame" x="249" y="0.0" width="135" height="33"/>
+                                        <color key="thumbTintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <connections>
+                                            <action selector="changeLineSlider:" destination="Hfg-Xt-2Nf" eventType="valueChanged" id="WP3-Rh-yTv"/>
+                                        </connections>
+                                    </slider>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="HUh-to-Uth" firstAttribute="trailing" secondItem="n0F-Yt-kHo" secondAttribute="trailing" constant="16" id="1yl-FF-HKb"/>
+                            <constraint firstItem="n0F-Yt-kHo" firstAttribute="top" secondItem="Xoa-r2-piX" secondAttribute="bottom" constant="16" id="2dD-Il-nQ0"/>
+                            <constraint firstItem="HUh-to-Uth" firstAttribute="bottom" secondItem="n0F-Yt-kHo" secondAttribute="bottom" constant="16" id="9GX-qk-E6Q"/>
+                            <constraint firstItem="Xoa-r2-piX" firstAttribute="leading" secondItem="HUh-to-Uth" secondAttribute="leading" id="KGU-rX-rie"/>
+                            <constraint firstItem="Xoa-r2-piX" firstAttribute="top" secondItem="HUh-to-Uth" secondAttribute="top" id="Yef-x2-FUh"/>
+                            <constraint firstItem="HUh-to-Uth" firstAttribute="trailing" secondItem="Xoa-r2-piX" secondAttribute="trailing" id="kWE-WY-e2s"/>
+                            <constraint firstItem="n0F-Yt-kHo" firstAttribute="leading" secondItem="HUh-to-Uth" secondAttribute="leading" constant="16" id="rTQ-uD-HJp"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="HUh-to-Uth"/>
                     </view>
+                    <connections>
+                        <outlet property="drawingImageView" destination="Xoa-r2-piX" id="ZXP-4y-MiK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aBT-gQ-gkR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4" y="-118"/>
+            <point key="canvasLocation" x="2.8985507246376816" y="-118.52678571428571"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="iconClean" width="32" height="32"/>
+        <image name="iconUndo" width="32" height="32"/>
+    </resources>
 </document>

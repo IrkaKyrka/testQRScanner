@@ -9,7 +9,8 @@
 import UIKit
 
 struct Line {
-    let strokeWidth: Float
+    
+    let strokeWidth: CGFloat
     let color: UIColor
     var points: [CGPoint]
 }

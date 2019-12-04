@@ -14,7 +14,7 @@
                     <view key="view" contentMode="scaleToFill" id="54X-uT-BzD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="66b-i4-d47"/>
                     </view>
                     <navigationItem key="navigationItem" id="IVR-LQ-nA2"/>

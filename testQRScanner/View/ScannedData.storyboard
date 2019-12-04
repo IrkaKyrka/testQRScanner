@@ -15,32 +15,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="T1N-Xm-uzv">
-                                <rect key="frame" x="36" y="796" width="342" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUZ-eK-7M8">
-                                        <rect key="frame" x="0.0" y="0.0" width="95.5" height="30"/>
-                                        <state key="normal" title="Rotate Right"/>
-                                        <connections>
-                                            <action selector="rotateImageRight:" destination="TbW-0s-8bM" eventType="touchUpInside" id="2tZ-A8-FBO"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czb-fx-81v">
-                                        <rect key="frame" x="123.5" y="0.0" width="95" height="30"/>
-                                        <state key="normal" title="Rotate Left"/>
-                                        <connections>
-                                            <action selector="rotateImageLeft:" destination="TbW-0s-8bM" eventType="touchUpInside" id="d9E-bO-MlF"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucP-O3-hrF">
-                                        <rect key="frame" x="246.5" y="0.0" width="95.5" height="30"/>
-                                        <state key="normal" title="Crop"/>
-                                        <connections>
-                                            <action selector="cropAndSaveImage:" destination="TbW-0s-8bM" eventType="touchUpInside" id="z7T-Pv-Aig"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzs-PW-C2k">
                                 <rect key="frame" x="0.0" y="44" width="414" height="744"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="9MN-Yu-8N8"/>
@@ -49,26 +23,58 @@
                                     <outlet property="delegate" destination="TbW-0s-8bM" id="LAB-LT-HNx"/>
                                 </connections>
                             </scrollView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="pDE-Bb-7wb">
-                                <rect key="frame" x="197" y="402" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </activityIndicatorView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="33" translatesAutoresizingMaskIntoConstraints="NO" id="T1N-Xm-uzv">
+                                <rect key="frame" x="99" y="796" width="216" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czb-fx-81v">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="VcY-xg-GDe"/>
+                                            <constraint firstAttribute="height" constant="50" id="qka-jt-f9K"/>
+                                        </constraints>
+                                        <state key="normal" title="Rotate Left" image="iconRotate-left"/>
+                                        <connections>
+                                            <action selector="rotateImageLeft:" destination="TbW-0s-8bM" eventType="touchUpInside" id="d9E-bO-MlF"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUZ-eK-7M8">
+                                        <rect key="frame" x="83" y="0.0" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="9zh-AC-3Wy"/>
+                                        </constraints>
+                                        <state key="normal" title="Rotate Right" image="iconRotate-right">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="rotateImageRight:" destination="TbW-0s-8bM" eventType="touchUpInside" id="2tZ-A8-FBO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucP-O3-hrF">
+                                        <rect key="frame" x="166" y="0.0" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="VZW-Jx-91M"/>
+                                            <constraint firstAttribute="width" constant="50" id="WBf-hv-BjF"/>
+                                        </constraints>
+                                        <state key="normal" title="Crop" image="iconCrop"/>
+                                        <connections>
+                                            <action selector="cropAndSaveImage:" destination="TbW-0s-8bM" eventType="touchUpInside" id="z7T-Pv-Aig"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="zzs-PW-C2k" firstAttribute="trailing" secondItem="Fuk-oV-N6n" secondAttribute="trailing" id="ChQ-3Z-Qbb"/>
-                            <constraint firstItem="T1N-Xm-uzv" firstAttribute="top" secondItem="zzs-PW-C2k" secondAttribute="bottom" constant="8" id="F5N-ZQ-398"/>
+                            <constraint firstItem="T1N-Xm-uzv" firstAttribute="top" secondItem="zzs-PW-C2k" secondAttribute="bottom" constant="8" id="DRu-yx-U2n"/>
                             <constraint firstItem="zzs-PW-C2k" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" id="GJx-xZ-vaf"/>
                             <constraint firstItem="zzs-PW-C2k" firstAttribute="top" secondItem="Fuk-oV-N6n" secondAttribute="top" id="HzT-as-rVI"/>
-                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="trailing" secondItem="T1N-Xm-uzv" secondAttribute="trailing" constant="36" id="Q9J-bP-qrH"/>
-                            <constraint firstItem="T1N-Xm-uzv" firstAttribute="leading" secondItem="Fuk-oV-N6n" secondAttribute="leading" constant="36" id="TLj-db-gIs"/>
-                            <constraint firstAttribute="bottom" secondItem="zzs-PW-C2k" secondAttribute="bottom" constant="108" id="ZXe-hX-5Fz"/>
-                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="bottom" secondItem="T1N-Xm-uzv" secondAttribute="bottom" constant="36" id="v6i-Yo-qdB"/>
+                            <constraint firstItem="T1N-Xm-uzv" firstAttribute="centerX" secondItem="Fuk-oV-N6n" secondAttribute="centerX" id="Ked-3I-OQx"/>
+                            <constraint firstItem="Fuk-oV-N6n" firstAttribute="bottom" secondItem="T1N-Xm-uzv" secondAttribute="bottom" constant="16" id="zB6-17-vmf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Fuk-oV-N6n"/>
                     </view>
                     <connections>
-                        <outlet property="activityIndicator" destination="pDE-Bb-7wb" id="fVb-cc-pZU"/>
                         <outlet property="scrollView" destination="zzs-PW-C2k" id="wAO-VY-ruV"/>
                     </connections>
                 </viewController>
@@ -82,4 +88,9 @@
             <point key="canvasLocation" x="47.826086956521742" y="93.75"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="iconCrop" width="32" height="32"/>
+        <image name="iconRotate-left" width="32" height="32"/>
+        <image name="iconRotate-right" width="32" height="32"/>
+    </resources>
 </document>

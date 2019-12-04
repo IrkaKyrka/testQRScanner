@@ -8,35 +8,36 @@
 
 import UIKit
 
-class ScannedDataViewController: UIViewController, UIScrollViewDelegate {
-    var url = ""
-    private var scannedImage = UIImageView()
+class ScannedDataViewController: BaseViewController, UIScrollViewDelegate {
+    var urlString: String?
+    private var scannedImageView = UIImageView()
     private let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    private let activityIndicator = UIActivityIndicatorView()
     
+    //MARK: - Outlets
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+   //MARK: - View lifecycle
     override func viewDidLoad() {
-        loadImage(url: url)
+        super.viewDidLoad()
+        
+        loadImage(urlString: urlString ?? "")
         
         scrollView.delegate = self
-        scannedImage.frame = CGRect(x: 0, y: 0, width: scrollView.bounds.width, height: scrollView.bounds.height)
-        scannedImage.isUserInteractionEnabled = true
-        scrollView.addSubview(scannedImage)
+        scannedImageView.frame = CGRect(x: 0, y: 0, width: scrollView.bounds.width, height: scrollView.bounds.height)
+        scannedImageView.isUserInteractionEnabled = true
+        scrollView.addSubview(scannedImageView)
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-    
+    //MARK: - Actions
     @IBAction func rotateImageRight(_ sender: Any) {
         //TODO: animation
-        self.scannedImage.image = self.scannedImage.image?.rotate(radians: .pi/2)
+        self.scannedImageView.image = self.scannedImageView.image?.rotate(radians: .pi/2)
     }
     
     @IBAction func rotateImageLeft(_ sender: Any) {
         //TODO: animation
-        self.scannedImage.image = self.scannedImage.image?.rotate(radians: -.pi/2)
+        self.scannedImageView.image = self.scannedImageView.image?.rotate(radians: -.pi/2)
     }
     
     @IBAction func cropAndSaveImage(_ sender: Any) {
@@ -51,38 +52,26 @@ class ScannedDataViewController: UIViewController, UIScrollViewDelegate {
         UIGraphicsEndImageContext()
         
         guard let imageForSave = image else { return }
-        UIImageWriteToSavedPhotosAlbum(imageForSave, nil, nil, nil)
-        showAlert()
+        navigateTo(navigationItem: .drawing(image: imageForSave), animated: true)
     }
     
-    private func loadImage(url: String) {
-        activityIndicatorSetup()
+    //MARK: - Private functions
+    private func loadImage(urlString: String) {
+        activityIndicatorSetup(indicator: activityIndicator, effectView: effectView)
         DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: URL(string: url)!) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        guard let self = self else { return }
-                        self.setImage(image: image)
-                        self.stopActivityIndicator()
-                    }
-                }
+            guard let url = URL(string: urlString), let data = try? Data(contentsOf: url), let image = UIImage(data: data) else { return }
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.setImage(image: image)
+                self.stopActivityIndicator(indicator: self.activityIndicator, effectView: self.effectView)
             }
         }
     }
     
-    private func showAlert() {
-        let alert = UIAlertController(title: "Image saved", message: "Your image has  been saved to your camera roll", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        
-        DispatchQueue.main.async {
-            self.present(alert, animated: true)
-        }
-    }
-    
     private func setImage(image: UIImage) {
-        scannedImage.image = image
-        scannedImage.contentMode = .center
-        scannedImage.frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
+        scannedImageView.image = image
+        scannedImageView.contentMode = .center
+        scannedImageView.frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
         
         scrollView.contentSize = image.size
         
@@ -100,7 +89,7 @@ class ScannedDataViewController: UIViewController, UIScrollViewDelegate {
     
     private func centerScrollViewComtents() {
         let boundsSize = scrollView.bounds.size
-        var contentFrame = scannedImage.frame
+        var contentFrame = scannedImageView.frame
         
         if contentFrame.size.width < boundsSize.width {
             contentFrame.origin.x = (boundsSize.width - contentFrame.size.width) / 2
@@ -114,28 +103,14 @@ class ScannedDataViewController: UIViewController, UIScrollViewDelegate {
             contentFrame.origin.y = 0
         }
         
-        scannedImage.frame = contentFrame
-    }
-    
-    private func activityIndicatorSetup() {
-        effectView.frame = view.frame
-        effectView.layer.masksToBounds = true
-        activityIndicator.frame = CGRect(x: view.frame.midX - 100, y: view.frame.midY - 100, width: 200, height: 200)
-        activityIndicator.startAnimating()
-        
-        effectView.contentView.addSubview(activityIndicator)
-        view.addSubview(effectView)
-    }
-    
-    private func stopActivityIndicator() {
-        effectView.removeFromSuperview()
-        activityIndicator.stopAnimating()
+        scannedImageView.frame = contentFrame
     }
 }
 
+//MARK: - UIScrollViewDelegate
 extension ScannedDataViewController {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return scannedImage
+        return scannedImageView
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {

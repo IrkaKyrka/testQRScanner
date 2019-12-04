@@ -9,27 +9,22 @@
 import UIKit
 
 class Canvas: UIView {
-    var strokeColor = UIColor.black
-    var strokeWidth: Float = 1
+    private var strokeColor = UIColor.black
+    private var strokeWidth: CGFloat = 1
     private var lines = [Line]()
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        guard let context = UIGraphicsGetCurrentContext() else {
-            return
-        }
+        guard let context = UIGraphicsGetCurrentContext() else { return }
         
         lines.forEach { (line) in
             context.setStrokeColor(line.color.cgColor)
             context.setLineWidth(CGFloat(line.strokeWidth))
             context.setLineCap(.round)
+            
             for (i, p) in line.points.enumerated() {
-                if i == 0 {
-                    context.move(to: p)
-                } else {
-                    context.addLine(to: p)
-                }
+                i == 0 ? context.move(to: p) :  context.addLine(to: p)
             }
             context.strokePath()
         }
@@ -49,10 +44,6 @@ class Canvas: UIView {
         setNeedsDisplay()
     }
     
-    func setBackgroungImage(image: UIImage) {
-        self.backgroundColor = UIColor(patternImage: image)
-    }
-    
     func undo() {
         lines.removeLast()
         setNeedsDisplay()
@@ -67,8 +58,11 @@ class Canvas: UIView {
         self.strokeColor = color
     }
     
-    func setStrokeWidht(width: Float) {
+    func setStrokeWidht(width: CGFloat) {
         self.strokeWidth = width
     }
     
+    func setCanvasBackground() {
+        self.backgroundColor = .clear
+    }
 }

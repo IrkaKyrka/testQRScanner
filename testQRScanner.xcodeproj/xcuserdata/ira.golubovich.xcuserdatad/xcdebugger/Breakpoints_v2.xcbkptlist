@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DFFCCC49-BD69-4009-A72B-EBAFB8F6D88A"
+            uuid = "F85E6774-7F2A-481A-AB5E-367CB29E4B74"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "testQRScanner/Controllers/ScannerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
-            landmarkName = "viewDidDisappear(_:)"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
+            landmarkName = "setupPreviewLayer()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
