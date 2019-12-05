@@ -9,9 +9,6 @@
 import UIKit
 import AVFoundation
 
-enum ConerLocation {
-    case topRight, topLeft, bottomRight, bottomLeft
-}
 
 class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     private var captureSession: AVCaptureSession!
@@ -182,7 +179,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         boundingBox?.isHidden = false
     }
     
-    private func drawCorner(x: CGFloat, y: CGFloat, location: ConerLocation) {
+    private func drawCorner(x: CGFloat, y: CGFloat, location: CornerLocation) {
         let cornerLine = CAShapeLayer()
         let path = UIBezierPath()
         

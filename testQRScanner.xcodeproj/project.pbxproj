@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		054901DA2396D28A00A8ABB2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054901D92396D28A00A8ABB2 /* BaseViewController.swift */; };
+		054901DC239914F500A8ABB2 /* CornerLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054901DB239914F400A8ABB2 /* CornerLocation.swift */; };
 		055A70DA23740F6700B90644 /* ScannedDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A70D923740F6600B90644 /* ScannedDataViewController.swift */; };
 		055A70DC2374103800B90644 /* ScannedData.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 055A70DB2374103800B90644 /* ScannedData.storyboard */; };
 		055A70DE2374230800B90644 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A70DD2374230800B90644 /* Navigation.swift */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		054901D92396D28A00A8ABB2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		054901DB239914F400A8ABB2 /* CornerLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerLocation.swift; sourceTree = "<group>"; };
 		055A70D923740F6600B90644 /* ScannedDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannedDataViewController.swift; sourceTree = "<group>"; };
 		055A70DB2374103800B90644 /* ScannedData.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ScannedData.storyboard; sourceTree = "<group>"; };
 		055A70DD2374230800B90644 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				057C850A237D8DA000F29B2D /* Extention.swift */,
+				054901DB239914F400A8ABB2 /* CornerLocation.swift */,
 				055A70DD2374230800B90644 /* Navigation.swift */,
 				05BCEE0823564B14002F804F /* AppDelegate */,
 				05BCEE0623564AB4002F804F /* Controllers */,
@@ -215,6 +218,7 @@
 				054901DA2396D28A00A8ABB2 /* BaseViewController.swift in Sources */,
 				05BCEDF4235649CF002F804F /* SceneDelegate.swift in Sources */,
 				05BCEE0B2356514E002F804F /* ScannerViewController.swift in Sources */,
+				054901DC239914F500A8ABB2 /* CornerLocation.swift in Sources */,
 				05E14D7D2394140D005F22A0 /* Line.swift in Sources */,
 				057C850B237D8DA000F29B2D /* Extention.swift in Sources */,
 			);
