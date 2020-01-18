@@ -84,10 +84,10 @@ class ScannedDataViewController: BaseViewController, UIScrollViewDelegate {
         scrollView.maximumZoomScale = 1
         scrollView.zoomScale = minScale
         
-        centerScrollViewComtents()
+        centerScrollViewContents()
     }
     
-    private func centerScrollViewComtents() {
+    private func centerScrollViewContents() {
         let boundsSize = scrollView.bounds.size
         var contentFrame = scannedImageView.frame
         
@@ -114,6 +114,6 @@ extension ScannedDataViewController {
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        centerScrollViewComtents()
+        centerScrollViewContents()
     }
 }
