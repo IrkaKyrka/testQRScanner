@@ -13,6 +13,8 @@
 		055A70DC2374103800B90644 /* ScannedData.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 055A70DB2374103800B90644 /* ScannedData.storyboard */; };
 		055A70DE2374230800B90644 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A70DD2374230800B90644 /* Navigation.swift */; };
 		057C850B237D8DA000F29B2D /* Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057C850A237D8DA000F29B2D /* Extention.swift */; };
+		05A89DD823D376C30081AF77 /* DrawingCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A89DD723D376C30081AF77 /* DrawingCorner.swift */; };
+		05A89DDA23D37B6A0081AF77 /* DrawingScanningRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A89DD923D37B6A0081AF77 /* DrawingScanningRect.swift */; };
 		05BCEDF2235649CF002F804F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BCEDF1235649CF002F804F /* AppDelegate.swift */; };
 		05BCEDF4235649CF002F804F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BCEDF3235649CF002F804F /* SceneDelegate.swift */; };
 		05BCEDF9235649CF002F804F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 05BCEDF7235649CF002F804F /* Main.storyboard */; };
@@ -32,6 +34,8 @@
 		055A70DB2374103800B90644 /* ScannedData.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ScannedData.storyboard; sourceTree = "<group>"; };
 		055A70DD2374230800B90644 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		057C850A237D8DA000F29B2D /* Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extention.swift; sourceTree = "<group>"; };
+		05A89DD723D376C30081AF77 /* DrawingCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCorner.swift; sourceTree = "<group>"; };
+		05A89DD923D37B6A0081AF77 /* DrawingScanningRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingScanningRect.swift; sourceTree = "<group>"; };
 		05BCEDEE235649CF002F804F /* testQRScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = testQRScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		05BCEDF1235649CF002F804F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		05BCEDF3235649CF002F804F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +88,8 @@
 				05BCEE0523564A20002F804F /* Model */,
 				05BCEE0923564B48002F804F /* Resources */,
 				05BCEE0723564ABF002F804F /* View */,
+				05A89DD723D376C30081AF77 /* DrawingCorner.swift */,
+				05A89DD923D37B6A0081AF77 /* DrawingScanningRect.swift */,
 			);
 			path = testQRScanner;
 			sourceTree = "<group>";
@@ -210,9 +216,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05A89DDA23D37B6A0081AF77 /* DrawingScanningRect.swift in Sources */,
 				055A70DA23740F6700B90644 /* ScannedDataViewController.swift in Sources */,
 				05BCEDF2235649CF002F804F /* AppDelegate.swift in Sources */,
 				055A70DE2374230800B90644 /* Navigation.swift in Sources */,
+				05A89DD823D376C30081AF77 /* DrawingCorner.swift in Sources */,
 				05E14D7F23941431005F22A0 /* Canvas.swift in Sources */,
 				05E14D812394159C005F22A0 /* DrawingViewController.swift in Sources */,
 				054901DA2396D28A00A8ABB2 /* BaseViewController.swift in Sources */,
