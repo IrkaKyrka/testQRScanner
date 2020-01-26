@@ -35,7 +35,7 @@ class Canvas: UIView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let point = touches.first?.location(in: nil) else { return }
+        guard let point = touches.first?.location(in: self) else { return }
         
         guard var lastLine = lines.popLast() else { return }
         lastLine.points.append(point)

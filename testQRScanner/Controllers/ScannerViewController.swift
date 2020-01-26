@@ -15,14 +15,17 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var metadataOutput: AVCaptureMetadataOutput?
     private var boundingBox: CAShapeLayer?
-    private var scanningRect: DrawingScanningRect?
+    private var scanningRect: DrawingScanningRect!
     private var rectPath: UIBezierPath?
     private var imageUrl: String?
     
     //MARK: - Constants
     private let offsetY: CGFloat = 120
     private let offsetX: CGFloat = 50
-    private var corner: DrawingCorner?
+    private var topLeftCorner: DrawingCorner!
+    private var topRightCorner: DrawingCorner!
+    private var bottomLeftCorner: DrawingCorner!
+    private var bottomRightCorner: DrawingCorner!
     private let textHeight: CGFloat = 50
     
     private let descriptionTextLayer: CATextLayer = {
@@ -34,17 +37,17 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         text.contentsScale = UIScreen.main.scale
         text.font = UIFont.systemFont(ofSize: 5, weight: UIFont.Weight.light)
         text.fontSize = 14
-
+        
         return text
     }()
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        corner = DrawingCorner()
-        scanningRect = DrawingScanningRect()
+        //corner = DrawingCorner()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(setMetadataOutputRectOfInterest), name:NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil)
-
+        
         setupCaptureSession()
         setupMetadataOutput()
     }
@@ -55,6 +58,17 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         if !captureSession.isRunning {
             captureSession.startRunning()
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        previewLayer = DrawingPreviewLayer(session: captureSession, view: self.view)
+        scanningRect = DrawingScanningRect(view: self.view, offsetY: self.offsetY, offsetX: self.offsetX, rectPath: self.rectPath ?? UIBezierPath())
+        topLeftCorner = DrawingCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topLeft, cornerSize: 6, cornerLineWidth: 20)
+        topRightCorner = DrawingCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topRight, cornerSize: 6, cornerLineWidth: 20)
+        bottomLeftCorner = DrawingCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomLeft, cornerSize: 6, cornerLineWidth: 20)
+        bottomRightCorner = DrawingCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomRight, cornerSize: 6, cornerLineWidth: 20)
+        boundingBox = DrawingBoundingBox(width: 2, color: UIColor.green.cgColor)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -72,26 +86,6 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         guard let rectPath = rectPath, let metadataOutputRect = previewLayer?.metadataOutputRectConverted(fromLayerRect: rectPath.bounds) else { return }
         metadataOutput?.rectOfInterest = metadataOutputRect
     }
-    
-//    private func drawRectForScanning() -> CAShapeLayer {
-//        let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height), cornerRadius: 0)
-//        let rectPathY = view.safeAreaInsets.top + offsetY
-//        rectPath = UIBezierPath(rect: CGRect(x: view.bounds.minX + offsetX, y: view.safeAreaInsets.top + offsetY, width: view.bounds.maxX - 2 * offsetX, height: view.bounds.maxY - rectPathY - offsetY))
-//        guard let rectPath = rectPath else { return CAShapeLayer() }
-//        path.append(rectPath)
-//
-//        let fillLayer = CAShapeLayer()
-//        fillLayer.path = path.cgPath
-//        fillLayer.fillRule = .evenOdd
-//        fillLayer.fillColor = view.backgroundColor?.cgColor
-//        fillLayer.opacity = 0.7
-//        drawCorner(x: view.bounds.minX + offsetX, y: view.safeAreaInsets.top + offsetY, location: .topLeft)
-//        drawCorner(x: view.bounds.maxX - offsetX, y: view.safeAreaInsets.top + offsetY, location: .topRight)
-//        drawCorner(x: view.bounds.minX + offsetX, y: view.bounds.maxY - offsetY, location: .bottomLeft)
-//        drawCorner(x: view.bounds.maxX - offsetX, y: view.bounds.maxY - offsetY, location: .bottomRight)
-        
-//        return fillLayer
-//    }
     
     private func setupCaptureSession() {
         let sessionQueue = DispatchQueue(label: "Capture Session Queue")
@@ -120,22 +114,25 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.setupPreviewLayer()
-                guard let previewLayer = self.previewLayer,
-                    let topLeftCorner = self.corner?.drawCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topLeft),
-                    let topRightCorner = self.corner?.drawCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topRight),
-                    let bottomLeftCorner = self.corner?.drawCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomLeft),
-                    let bottomRightCorner = self.corner?.drawCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomRight),
-                    let scanningRect = self.scanningRect?.drawRect(view: self.view, offsetY: self.offsetY, offsetX: self.offsetX, rectPath: self.rectPath ?? UIBezierPath()) else { return }
-                previewLayer.addSublayer(scanningRect)
+ //               self.setupPreviewLayer()
+                guard let previewLayer = self.previewLayer
+               
+                    //                    ,
+                    //                    let topLeftCorner = self.corner?.drawCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topLeft),
+                    //                    let topRightCorner = self.corner?.drawCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topRight),
+                    //                    let bottomLeftCorner = self.corner?.drawCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomLeft),
+                    //                    let bottomRightCorner = self.corner?.drawCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomRight)
+                    else { return }
+                 self.view.layer.addSublayer(previewLayer)
+                previewLayer.addSublayer(self.scanningRect)
                 previewLayer.addSublayer(self.descriptionTextLayer)
-                previewLayer.addSublayer(topLeftCorner)
-                previewLayer.addSublayer(topRightCorner)
-                previewLayer.addSublayer(bottomLeftCorner)
-                previewLayer.addSublayer(bottomRightCorner)
+                previewLayer.addSublayer(self.topLeftCorner)
+                previewLayer.addSublayer(self.topRightCorner)
+                previewLayer.addSublayer(self.bottomLeftCorner)
+                previewLayer.addSublayer(self.bottomRightCorner)
                 
                 self.descriptionTextLayer.frame = CGRect(x: previewLayer.bounds.minX, y: self.view.safeAreaInsets.top + self.offsetY / 2 - (self.textHeight / 2), width: previewLayer.bounds.width , height: self.textHeight)
-                self.drawBoundingBox()
+                //                self.drawBoundingBox()
             }
         }
     }
@@ -153,24 +150,24 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         }
     }
     
-    private func drawBoundingBox() {
-        boundingBox = CAShapeLayer()
-
-        if let boundingBox = boundingBox {
-            boundingBox.strokeColor = UIColor.green.cgColor
-            boundingBox.lineWidth = 2
-            boundingBox.fillColor = UIColor.clear.cgColor
-            previewLayer?.addSublayer(boundingBox)
-        }
-    }
+    //    private func drawBoundingBox() {
+    //        boundingBox = CAShapeLayer()
+    //
+    //        if let boundingBox = boundingBox {
+    //            boundingBox.strokeColor = UIColor.green.cgColor
+    //            boundingBox.lineWidth = 2
+    //            boundingBox.fillColor = UIColor.clear.cgColor
+    //            previewLayer?.addSublayer(boundingBox)
+    //        }
+    //    }
     
-    private func setupPreviewLayer() {
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer?.frame = view.layer.bounds
-        previewLayer?.videoGravity = .resizeAspectFill
-        guard  let previewLayer = previewLayer else { return }
-        view.layer.addSublayer(previewLayer)
-    }
+//    private func setupPreviewLayer() {
+//        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+//        previewLayer?.frame = view.layer.bounds
+//        previewLayer?.videoGravity = .resizeAspectFill
+//        guard  let previewLayer = previewLayer else { return }
+//        view.layer.addSublayer(previewLayer)
+//    }
     
     private func updateBoundingBox(_ points: [CGPoint]) {
         guard let firstPoint = points.first else {
@@ -198,15 +195,26 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
     }
     
     private func hideBoundingBox(after: Double) {
-        var resetTimer: Timer?
-        resetTimer?.invalidate()
-        resetTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval() + after,
-                                          repeats: false) {
-                                            [weak self] (timer) in
-                                            self?.boundingBox?.isHidden = true
-                                            guard let imageUrl = self?.imageUrl else { return }
-                                            self?.navigateTo(navigationItem: .scannedDataDetail(imageUrl: imageUrl), animated: true)
+        //        var resetTimer: Timer?
+        //        resetTimer?.invalidate()
+        //        resetTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval() + after,
+        //                                          repeats: false) {
+        //                                            [weak self] (timer) in
+        //                                            self?.boundingBox?.isHidden = true
+        //                                            guard let imageUrl = self?.imageUrl else { return }
+        //                                            self?.navigateTo(navigationItem: .scannedDataDetail(imageUrl: imageUrl), animated: true)
+        delay(1) { [weak self] in
+            self?.boundingBox?.isHidden = true
+            guard let imageUrl = self?.imageUrl else { return }
+            self?.navigateTo(navigationItem: .scannedDataDetail(imageUrl: imageUrl), animated: true)
         }
+    }
+    
+    func delay(_ delay: Double, closure: @escaping ()->()) {
+        DispatchQueue.main.asyncAfter(
+            deadline: DispatchTime.now() + delay,
+            execute: closure
+        )
     }
 }
 

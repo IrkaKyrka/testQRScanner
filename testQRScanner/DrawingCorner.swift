@@ -9,17 +9,26 @@
 import UIKit
 import AVFoundation
 
-class DrawingCorner {
-    private let cornerSize: CGFloat = 20
-    private let cornerLineWidth: CGFloat = 6
+class DrawingCorner: CAShapeLayer {
+//    private let cornerSize: CGFloat = 20
+//    private let cornerLineWidth: CGFloat = 6
     
-    func drawCorner(x: CGFloat, y: CGFloat, location: CornerLocation) -> CAShapeLayer {
-        let cornerLine = CAShapeLayer()
+    init(x: CGFloat, y: CGFloat, location: CornerLocation, cornerSize: CGFloat, cornerLineWidth: CGFloat) {
+        super.init()
+        drawCorner(x: x, y: y, location: location, cornerSize: cornerSize, cornerLineWidth: cornerLineWidth)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func drawCorner(x: CGFloat, y: CGFloat, location: CornerLocation, cornerSize: CGFloat, cornerLineWidth: CGFloat){
+//        let cornerLine = CAShapeLayer()
         let path = UIBezierPath()
         
-        cornerLine.strokeColor = UIColor.white.cgColor
-        cornerLine.lineWidth = cornerLineWidth
-        cornerLine.fillColor = UIColor.white.cgColor
+        self.strokeColor = UIColor.white.cgColor
+        self.lineWidth = cornerLineWidth
+        self.fillColor = UIColor.white.cgColor
 //        layer?.addSublayer(cornerLine)
         
         switch location {
@@ -55,8 +64,6 @@ class DrawingCorner {
             
         }
         
-        cornerLine.path = path.cgPath
-        
-        return cornerLine
+        self.path = path.cgPath
     }
 }
