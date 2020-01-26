@@ -25,6 +25,9 @@
 		05E14D7F23941431005F22A0 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E14D7E23941431005F22A0 /* Canvas.swift */; };
 		05E14D812394159C005F22A0 /* DrawingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E14D802394159C005F22A0 /* DrawingViewController.swift */; };
 		05E14D83239416F5005F22A0 /* Drawing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 05E14D82239416F5005F22A0 /* Drawing.storyboard */; };
+		2FB8278023DE0D6300D1D6E4 /* DrawingBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB8277F23DE0D6300D1D6E4 /* DrawingBoundingBox.swift */; };
+		2FB8278223DE0D7100D1D6E4 /* DrawingPreviewLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB8278123DE0D7100D1D6E4 /* DrawingPreviewLayer.swift */; };
+		2FB8278423DE154D00D1D6E4 /* CaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB8278323DE154D00D1D6E4 /* CaptureSession.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +51,9 @@
 		05E14D7E23941431005F22A0 /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		05E14D802394159C005F22A0 /* DrawingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewController.swift; sourceTree = "<group>"; };
 		05E14D82239416F5005F22A0 /* Drawing.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Drawing.storyboard; sourceTree = "<group>"; };
+		2FB8277F23DE0D6300D1D6E4 /* DrawingBoundingBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingBoundingBox.swift; sourceTree = "<group>"; };
+		2FB8278123DE0D7100D1D6E4 /* DrawingPreviewLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingPreviewLayer.swift; sourceTree = "<group>"; };
+		2FB8278323DE154D00D1D6E4 /* CaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSession.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +95,9 @@
 				05BCEE0923564B48002F804F /* Resources */,
 				05BCEE0723564ABF002F804F /* View */,
 				05A89DD723D376C30081AF77 /* DrawingCorner.swift */,
+				2FB8278323DE154D00D1D6E4 /* CaptureSession.swift */,
+				2FB8277F23DE0D6300D1D6E4 /* DrawingBoundingBox.swift */,
+				2FB8278123DE0D7100D1D6E4 /* DrawingPreviewLayer.swift */,
 				05A89DD923D37B6A0081AF77 /* DrawingScanningRect.swift */,
 			);
 			path = testQRScanner;
@@ -217,11 +226,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				05A89DDA23D37B6A0081AF77 /* DrawingScanningRect.swift in Sources */,
+				2FB8278223DE0D7100D1D6E4 /* DrawingPreviewLayer.swift in Sources */,
 				055A70DA23740F6700B90644 /* ScannedDataViewController.swift in Sources */,
 				05BCEDF2235649CF002F804F /* AppDelegate.swift in Sources */,
 				055A70DE2374230800B90644 /* Navigation.swift in Sources */,
 				05A89DD823D376C30081AF77 /* DrawingCorner.swift in Sources */,
 				05E14D7F23941431005F22A0 /* Canvas.swift in Sources */,
+				2FB8278423DE154D00D1D6E4 /* CaptureSession.swift in Sources */,
+				2FB8278023DE0D6300D1D6E4 /* DrawingBoundingBox.swift in Sources */,
 				05E14D812394159C005F22A0 /* DrawingViewController.swift in Sources */,
 				054901DA2396D28A00A8ABB2 /* BaseViewController.swift in Sources */,
 				05BCEDF4235649CF002F804F /* SceneDelegate.swift in Sources */,
@@ -373,13 +385,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4B828PQURC;
+				DEVELOPMENT_TEAM = N76VWDJ32E;
 				INFOPLIST_FILE = testQRScanner/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "Ira-Golubovich.testQRScanner";
+				PRODUCT_BUNDLE_IDENTIFIER = IraGolubovich.testQRScanner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -391,13 +403,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4B828PQURC;
+				DEVELOPMENT_TEAM = N76VWDJ32E;
 				INFOPLIST_FILE = testQRScanner/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "Ira-Golubovich.testQRScanner";
+				PRODUCT_BUNDLE_IDENTIFIER = IraGolubovich.testQRScanner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

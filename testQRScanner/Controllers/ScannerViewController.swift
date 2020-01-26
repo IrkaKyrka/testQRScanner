@@ -10,11 +10,11 @@ import UIKit
 import AVFoundation
 
 
-class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-    private var captureSession: AVCaptureSession!
-    private var previewLayer: AVCaptureVideoPreviewLayer?
-    private var metadataOutput: AVCaptureMetadataOutput?
-    private var boundingBox: CAShapeLayer?
+class ScannerViewController: UIViewController {
+    //    private var captureSession: AVCaptureSession!
+    private var previewLayer: DrawingPreviewLayer?
+    //    private var metadataOutput: AVCaptureMetadataOutput?
+    private var boundingBox: DrawingBoundingBox!
     private var scanningRect: DrawingScanningRect!
     private var rectPath: UIBezierPath?
     private var imageUrl: String?
@@ -44,36 +44,59 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //corner = DrawingCorner()
         
         NotificationCenter.default.addObserver(self, selector: #selector(setMetadataOutputRectOfInterest), name:NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil)
         
-        setupCaptureSession()
-        setupMetadataOutput()
+        CaptureSession.setupCaptureSession() { success in
+            if success {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    guard let previewLayer = self.previewLayer else { return }
+                    self.view.layer.addSublayer(previewLayer)
+                    previewLayer.addSublayer(self.scanningRect)
+                    previewLayer.addSublayer(self.descriptionTextLayer)
+                    previewLayer.addSublayer(self.topLeftCorner)
+                    previewLayer.addSublayer(self.topRightCorner)
+                    previewLayer.addSublayer(self.bottomLeftCorner)
+                    previewLayer.addSublayer(self.bottomRightCorner)
+                    
+                    self.descriptionTextLayer.frame = CGRect(x: previewLayer.bounds.minX, y: self.view.safeAreaInsets.top + self.offsetY / 2 - (self.textHeight / 2), width: previewLayer.bounds.width , height: self.textHeight)
+                    self.boundingBox = DrawingBoundingBox(width: 2, color: UIColor.green.cgColor)
+                    previewLayer.addSublayer(self.boundingBox)
+                }
+            } else {
+                showError()
+            }
+            
+        }
+        CaptureSession.setupMetadataOutput() {
+            
+        }
+        
+        previewLayer = DrawingPreviewLayer(session: CaptureSession.captureSession, view: self.view)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if !captureSession.isRunning {
-            captureSession.startRunning()
+        if !CaptureSession.captureSession.isRunning {
+            CaptureSession.captureSession.startRunning()
         }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        previewLayer = DrawingPreviewLayer(session: captureSession, view: self.view)
+        
         scanningRect = DrawingScanningRect(view: self.view, offsetY: self.offsetY, offsetX: self.offsetX, rectPath: self.rectPath ?? UIBezierPath())
         topLeftCorner = DrawingCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topLeft, cornerSize: 6, cornerLineWidth: 20)
         topRightCorner = DrawingCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topRight, cornerSize: 6, cornerLineWidth: 20)
         bottomLeftCorner = DrawingCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomLeft, cornerSize: 6, cornerLineWidth: 20)
         bottomRightCorner = DrawingCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomRight, cornerSize: 6, cornerLineWidth: 20)
-        boundingBox = DrawingBoundingBox(width: 2, color: UIColor.green.cgColor)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        if captureSession.isRunning {
-            captureSession.stopRunning()
+        if CaptureSession.captureSession.isRunning {
+            CaptureSession.captureSession.stopRunning()
         }
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil)
@@ -84,90 +107,64 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
     //MARK: - Private function
     @objc private func setMetadataOutputRectOfInterest() {
         guard let rectPath = rectPath, let metadataOutputRect = previewLayer?.metadataOutputRectConverted(fromLayerRect: rectPath.bounds) else { return }
-        metadataOutput?.rectOfInterest = metadataOutputRect
+        CaptureSession.metadataOutput?.rectOfInterest = metadataOutputRect
     }
     
-    private func setupCaptureSession() {
-        let sessionQueue = DispatchQueue(label: "Capture Session Queue")
-        
-        sessionQueue.sync {
-            captureSession = AVCaptureSession()
-            captureSession.beginConfiguration()
-            guard let viewCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
-            let videoInput: AVCaptureDeviceInput
-            
-            do {
-                videoInput = try AVCaptureDeviceInput(device: viewCaptureDevice)
-            } catch let error as NSError {
-                print("Initializer AVCaptureDeviceInput returnd error: \(error.localizedDescription)")
-                return
-            }
-            
-            if captureSession.canAddInput(videoInput) {
-                captureSession.addInput(videoInput)
-            } else {
-                showError()
-                return
-            }
-            
-            captureSession.commitConfiguration()
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
- //               self.setupPreviewLayer()
-                guard let previewLayer = self.previewLayer
-               
-                    //                    ,
-                    //                    let topLeftCorner = self.corner?.drawCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topLeft),
-                    //                    let topRightCorner = self.corner?.drawCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.safeAreaInsets.top + self.offsetY, location: .topRight),
-                    //                    let bottomLeftCorner = self.corner?.drawCorner(x: self.view.bounds.minX + self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomLeft),
-                    //                    let bottomRightCorner = self.corner?.drawCorner(x: self.view.bounds.maxX - self.offsetX, y: self.view.bounds.maxY - self.offsetY, location: .bottomRight)
-                    else { return }
-                 self.view.layer.addSublayer(previewLayer)
-                previewLayer.addSublayer(self.scanningRect)
-                previewLayer.addSublayer(self.descriptionTextLayer)
-                previewLayer.addSublayer(self.topLeftCorner)
-                previewLayer.addSublayer(self.topRightCorner)
-                previewLayer.addSublayer(self.bottomLeftCorner)
-                previewLayer.addSublayer(self.bottomRightCorner)
-                
-                self.descriptionTextLayer.frame = CGRect(x: previewLayer.bounds.minX, y: self.view.safeAreaInsets.top + self.offsetY / 2 - (self.textHeight / 2), width: previewLayer.bounds.width , height: self.textHeight)
-                //                self.drawBoundingBox()
-            }
-        }
-    }
-    
-    private func setupMetadataOutput() {
-        metadataOutput = AVCaptureMetadataOutput()
-        guard let metadataOutput = metadataOutput else { return }
-        
-        if (captureSession?.canAddOutput(metadataOutput) ?? false) {
-            captureSession?.addOutput(metadataOutput)
-            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [.qr]
-        } else {
-            showError()
-        }
-    }
-    
-    //    private func drawBoundingBox() {
-    //        boundingBox = CAShapeLayer()
+    //    private func setupCaptureSession() {
+    //        let sessionQueue = DispatchQueue(label: "Capture Session Queue")
     //
-    //        if let boundingBox = boundingBox {
-    //            boundingBox.strokeColor = UIColor.green.cgColor
-    //            boundingBox.lineWidth = 2
-    //            boundingBox.fillColor = UIColor.clear.cgColor
-    //            previewLayer?.addSublayer(boundingBox)
+    //        sessionQueue.sync {
+    //            captureSession = AVCaptureSession()
+    //            captureSession.beginConfiguration()
+    //            guard let viewCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
+    //            let videoInput: AVCaptureDeviceInput
+    //
+    //            do {
+    //                videoInput = try AVCaptureDeviceInput(device: viewCaptureDevice)
+    //            } catch let error as NSError {
+    //                print("Initializer AVCaptureDeviceInput returnd error: \(error.localizedDescription)")
+    //                return
+    //            }
+    //
+    //            if captureSession.canAddInput(videoInput) {
+    //                captureSession.addInput(videoInput)
+    //            } else {
+    //                showError()
+    //                return
+    //            }
+    //
+    //            captureSession.commitConfiguration()
+    //
+    //            DispatchQueue.main.async { [weak self] in
+    //                guard let self = self else { return }
+    //                guard let previewLayer = self.previewLayer else { return }
+    //                 self.view.layer.addSublayer(previewLayer)
+    //                previewLayer.addSublayer(self.scanningRect)
+    //                previewLayer.addSublayer(self.descriptionTextLayer)
+    //                previewLayer.addSublayer(self.topLeftCorner)
+    //                previewLayer.addSublayer(self.topRightCorner)
+    //                previewLayer.addSublayer(self.bottomLeftCorner)
+    //                previewLayer.addSublayer(self.bottomRightCorner)
+    //
+    //                self.descriptionTextLayer.frame = CGRect(x: previewLayer.bounds.minX, y: self.view.safeAreaInsets.top + self.offsetY / 2 - (self.textHeight / 2), width: previewLayer.bounds.width , height: self.textHeight)
+    //                self.boundingBox = DrawingBoundingBox(width: 2, color: UIColor.green.cgColor)
+    //                previewLayer.addSublayer(self.boundingBox)
+    //            }
     //        }
     //    }
     
-//    private func setupPreviewLayer() {
-//        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-//        previewLayer?.frame = view.layer.bounds
-//        previewLayer?.videoGravity = .resizeAspectFill
-//        guard  let previewLayer = previewLayer else { return }
-//        view.layer.addSublayer(previewLayer)
-//    }
+    //    private func setupMetadataOutput() {
+    //        metadataOutput = AVCaptureMetadataOutput()
+    //        guard let metadataOutput = metadataOutput else { return }
+    //
+    //        if (captureSession?.canAddOutput(metadataOutput) ?? false) {
+    //            captureSession?.addOutput(metadataOutput)
+    //            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+    //            metadataOutput.metadataObjectTypes = [.qr]
+    //        } else {
+    //            showError()
+    //        }
+    //    }
     
     private func updateBoundingBox(_ points: [CGPoint]) {
         guard let firstPoint = points.first else {
@@ -191,18 +188,10 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         let ac = UIAlertController(title: "Scanning not supported", message: "Your device does not support scanning a code from an item. Please use a device with a camera.", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Ok", style: .default))
         present(ac, animated: true)
-        captureSession = nil
+        CaptureSession.captureSession = nil
     }
     
     private func hideBoundingBox(after: Double) {
-        //        var resetTimer: Timer?
-        //        resetTimer?.invalidate()
-        //        resetTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval() + after,
-        //                                          repeats: false) {
-        //                                            [weak self] (timer) in
-        //                                            self?.boundingBox?.isHidden = true
-        //                                            guard let imageUrl = self?.imageUrl else { return }
-        //                                            self?.navigateTo(navigationItem: .scannedDataDetail(imageUrl: imageUrl), animated: true)
         delay(1) { [weak self] in
             self?.boundingBox?.isHidden = true
             guard let imageUrl = self?.imageUrl else { return }
@@ -210,7 +199,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         }
     }
     
-    func delay(_ delay: Double, closure: @escaping ()->()) {
+    private func delay(_ delay: Double, closure: @escaping ()->()) {
         DispatchQueue.main.asyncAfter(
             deadline: DispatchTime.now() + delay,
             execute: closure
@@ -227,7 +216,7 @@ extension ScannerViewController {
             return
         }
         
-        captureSession.stopRunning()
+        CaptureSession.captureSession.stopRunning()
         
         guard let metadataObject = metadataObjects.first,
             let transformedObject = previewLayer?.transformedMetadataObject(for: metadataObject) as? AVMetadataMachineReadableCodeObject,

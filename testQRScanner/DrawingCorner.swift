@@ -10,8 +10,6 @@ import UIKit
 import AVFoundation
 
 class DrawingCorner: CAShapeLayer {
-//    private let cornerSize: CGFloat = 20
-//    private let cornerLineWidth: CGFloat = 6
     
     init(x: CGFloat, y: CGFloat, location: CornerLocation, cornerSize: CGFloat, cornerLineWidth: CGFloat) {
         super.init()
@@ -23,13 +21,11 @@ class DrawingCorner: CAShapeLayer {
     }
     
     func drawCorner(x: CGFloat, y: CGFloat, location: CornerLocation, cornerSize: CGFloat, cornerLineWidth: CGFloat){
-//        let cornerLine = CAShapeLayer()
         let path = UIBezierPath()
         
         self.strokeColor = UIColor.white.cgColor
         self.lineWidth = cornerLineWidth
         self.fillColor = UIColor.white.cgColor
-//        layer?.addSublayer(cornerLine)
         
         switch location {
         case .topLeft:

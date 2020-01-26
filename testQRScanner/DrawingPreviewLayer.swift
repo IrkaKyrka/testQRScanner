@@ -10,9 +10,10 @@ import UIKit
 import AVFoundation
 
 class DrawingPreviewLayer: AVCaptureVideoPreviewLayer {
-     init(session: AVCaptureSession, view: UIView) {
-        super.init()
-        setupPreviewLayer(with: session, on: view)
+    
+    init(session: AVCaptureSession, view: UIView) {
+        super.init(session: session)
+        self.setupPreviewLayer(with: session, on: view)
     }
     
     required init?(coder: NSCoder) {
@@ -20,7 +21,6 @@ class DrawingPreviewLayer: AVCaptureVideoPreviewLayer {
     }
     
     private func setupPreviewLayer(with session: AVCaptureSession, on view: UIView) {
-//        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.session = session
         self.frame = view.layer.bounds
         self.videoGravity = .resizeAspectFill

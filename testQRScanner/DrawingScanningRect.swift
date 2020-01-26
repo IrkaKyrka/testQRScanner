@@ -26,7 +26,6 @@ class DrawingScanningRect: CAShapeLayer {
         rectPath = UIBezierPath(rect: CGRect(x: view.bounds.minX + offsetX, y: view.safeAreaInsets.top + offsetY, width: view.bounds.maxX - 2 * offsetX, height: view.bounds.maxY - rectPathY - offsetY))
         path.append(rectPath)
         
-//        let fillLayer = CAShapeLayer()
         self.path = path.cgPath
         self.fillRule = .evenOdd
         self.fillColor = view.backgroundColor?.cgColor
