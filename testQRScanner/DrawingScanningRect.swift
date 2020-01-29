@@ -21,7 +21,7 @@ class DrawingScanningRect: CAShapeLayer {
     
     func drawRect(view: UIView, offsetY: CGFloat, offsetX: CGFloat, rectPath: UIBezierPath) {
         var rectPath = rectPath
-        let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height), cornerRadius: 0)
+        let path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height))
         let rectPathY = view.safeAreaInsets.top + offsetY
         rectPath = UIBezierPath(rect: CGRect(x: view.bounds.minX + offsetX, y: view.safeAreaInsets.top + offsetY, width: view.bounds.maxX - 2 * offsetX, height: view.bounds.maxY - rectPathY - offsetY))
         path.append(rectPath)

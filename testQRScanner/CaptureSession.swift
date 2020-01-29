@@ -9,12 +9,16 @@
 import Foundation
 import AVFoundation
 
-class CaptureSession: NSObject, AVCaptureMetadataOutputObjectsDelegate {
-    static var captureSession: AVCaptureSession!
-    static var metadataOutput: AVCaptureMetadataOutput?
+protocol CapterSessionDelegate: AVCaptureMetadataOutputObjectsDelegate {
+    
+}
+
+class CaptureSession: NSObject, CapterSessionDelegate {
+    static private var captureSession: AVCaptureSession!
+    static private var metadataOutput: AVCaptureMetadataOutput?
     
     
-    static func setupCaptureSession(success: (Bool)->()) {
+    static func setupCaptureSession(onSuccess: ()->Void, onFailure: ()->Void) {
         let sessionQueue = DispatchQueue(label: "Capture Session Queue")
         
         sessionQueue.sync {
@@ -33,27 +37,49 @@ class CaptureSession: NSObject, AVCaptureMetadataOutputObjectsDelegate {
             if CaptureSession.captureSession.canAddInput(videoInput) {
                 CaptureSession.captureSession.addInput(videoInput)
             } else {
-                //                   showError()
-                success(false)
+                onFailure()
                 return
             }
             
             CaptureSession.captureSession.commitConfiguration()
-            success(true)
+            onSuccess()
         }
     }
     
-    static func setupMetadataOutput(shoeError: ()->()) {
+    static func setupMetadataOutput(delegate: CapterSessionDelegate, showError: ()->()) {
         CaptureSession.metadataOutput = AVCaptureMetadataOutput()
         guard let metadataOutput = CaptureSession.metadataOutput else { return }
            
         if (CaptureSession.captureSession?.canAddOutput(metadataOutput) ?? false) {
             CaptureSession.captureSession?.addOutput(metadataOutput)
-//            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+            metadataOutput.setMetadataObjectsDelegate(delegate, queue: DispatchQueue.main)
             metadataOutput.metadataObjectTypes = [.qr]
            } else {
-   //            showError()
-            shoeError()
+            showError()
            }
        }
+    
+    static func stopSession() {
+        CaptureSession.captureSession.stopRunning()
+    }
+    
+    static func startSession() {
+        CaptureSession.captureSession.startRunning()
+    }
+    
+    static func isRunningSession() -> Bool {
+        return CaptureSession.captureSession.isRunning
+    }
+    
+    static func setRectOfInterest(rect: CGRect) {
+         CaptureSession.metadataOutput?.rectOfInterest = rect
+    }
+    
+    static func deinitCapterSession() {
+        CaptureSession.captureSession = nil
+    }
+    
+    static func getCurrentCapterSession() -> AVCaptureSession {
+        return CaptureSession.captureSession
+    }
 }

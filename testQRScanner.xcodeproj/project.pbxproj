@@ -28,6 +28,7 @@
 		2FB8278023DE0D6300D1D6E4 /* DrawingBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB8277F23DE0D6300D1D6E4 /* DrawingBoundingBox.swift */; };
 		2FB8278223DE0D7100D1D6E4 /* DrawingPreviewLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB8278123DE0D7100D1D6E4 /* DrawingPreviewLayer.swift */; };
 		2FB8278423DE154D00D1D6E4 /* CaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB8278323DE154D00D1D6E4 /* CaptureSession.swift */; };
+		2FB8278623E0AFA000D1D6E4 /* CustomScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB8278523E0AFA000D1D6E4 /* CustomScannerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		2FB8277F23DE0D6300D1D6E4 /* DrawingBoundingBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingBoundingBox.swift; sourceTree = "<group>"; };
 		2FB8278123DE0D7100D1D6E4 /* DrawingPreviewLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingPreviewLayer.swift; sourceTree = "<group>"; };
 		2FB8278323DE154D00D1D6E4 /* CaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSession.swift; sourceTree = "<group>"; };
+		2FB8278523E0AFA000D1D6E4 /* CustomScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScannerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 				05BCEE0723564ABF002F804F /* View */,
 				05A89DD723D376C30081AF77 /* DrawingCorner.swift */,
 				2FB8278323DE154D00D1D6E4 /* CaptureSession.swift */,
+				2FB8278523E0AFA000D1D6E4 /* CustomScannerView.swift */,
 				2FB8277F23DE0D6300D1D6E4 /* DrawingBoundingBox.swift */,
 				2FB8278123DE0D7100D1D6E4 /* DrawingPreviewLayer.swift */,
 				05A89DD923D37B6A0081AF77 /* DrawingScanningRect.swift */,
@@ -232,6 +235,7 @@
 				055A70DE2374230800B90644 /* Navigation.swift in Sources */,
 				05A89DD823D376C30081AF77 /* DrawingCorner.swift in Sources */,
 				05E14D7F23941431005F22A0 /* Canvas.swift in Sources */,
+				2FB8278623E0AFA000D1D6E4 /* CustomScannerView.swift in Sources */,
 				2FB8278423DE154D00D1D6E4 /* CaptureSession.swift in Sources */,
 				2FB8278023DE0D6300D1D6E4 /* DrawingBoundingBox.swift in Sources */,
 				05E14D812394159C005F22A0 /* DrawingViewController.swift in Sources */,
